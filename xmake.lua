@@ -20,7 +20,7 @@ set_warnings( "allextra" )
 set_policy( "build.across_targets_in_parallel", false )
 
 if is_plat( "linux" ) then
-    --add_requires( "lodepng" )
+    add_requires( "glib" )
 elseif is_plat( "macosx" ) then
     --add_requires( "lodepng" )
 elseif is_plat( "windows" ) then
@@ -28,8 +28,8 @@ elseif is_plat( "windows" ) then
 else
 end
 
-add_requireconfs( "**", "*.**", { system = false } )
-add_requireconfs( "*", { configs = { shared = false } } )
+--add_requireconfs( "**", "*.**", { system = false } )
+--add_requireconfs( "*", { configs = { shared = false } } )
 
 target( "CursedModNative" )
     set_kind( "shared" )
@@ -38,9 +38,7 @@ target( "CursedModNative" )
     set_group( "LIBS" )
 
     if is_plat( "linux" ) then
-        add_syslinks("pthread")
-        add_sysincludedirs("/usr/include/libmount", "/usr/include/blkid", "/usr/include/glib-2.0", "/usr/lib64/glib-2.0/include")
-        add_links("gio-2.0", "gobject-2.0", "glib-2.0")
+        add_packages( "glib" )
     elseif is_plat( "macosx" ) then
         --add_packages( "lodepng" )
     elseif is_plat( "windows" ) then

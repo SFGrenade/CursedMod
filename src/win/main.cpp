@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+namespace MissingValues {
 enum CUSTOM_DWMWINDOWATTRIBUTE : WORD {
   DWMWA_USE_HOSTBACKDROPBRUSH = 17,
   DWMA_USE_IMMERSIVE_DARKMODE_BEFORE20H1 = 19,
@@ -14,6 +15,7 @@ enum CUSTOM_DWMWINDOWATTRIBUTE : WORD {
   DWMWA_VISIBLE_FRAME_BORDER_THICKNESS,
   DWMWA_SYSTEMBACKDROP_TYPE
 };
+}
 HWND unityWindowHandle = 0;
 NOTIFYICONDATA notifyData;
 
@@ -60,14 +62,20 @@ extern bool SetWindowDarkMode( const bool darkMode ) {
   printInFile( "Set window theme..." );
   COLORREF themeColor = darkMode ? 0x00505050 : 0x00FFFFFF;
   BOOL useDarkMode = darkMode;
-  bool immersiveDarkModeResult
-      = S_OK == DwmSetWindowAttribute( unityWindowHandle, CUSTOM_DWMWINDOWATTRIBUTE::DWMA_USE_IMMERSIVE_DARKMODE, &useDarkMode, sizeof( useDarkMode ) );
-  bool immersiveDarkMode20h1Result
-      = S_OK
-        == DwmSetWindowAttribute( unityWindowHandle, CUSTOM_DWMWINDOWATTRIBUTE::DWMA_USE_IMMERSIVE_DARKMODE_BEFORE20H1, &useDarkMode, sizeof( useDarkMode ) );
-  bool borderColorResult = S_OK == DwmSetWindowAttribute( unityWindowHandle, CUSTOM_DWMWINDOWATTRIBUTE::DWMWA_BORDER_COLOR, &themeColor, sizeof( themeColor ) );
+  bool immersiveDarkModeResult = S_OK
+                                 == DwmSetWindowAttribute( unityWindowHandle,
+                                                           MissingValues::CUSTOM_DWMWINDOWATTRIBUTE::DWMA_USE_IMMERSIVE_DARKMODE,
+                                                           &useDarkMode,
+                                                           sizeof( useDarkMode ) );
+  bool immersiveDarkMode20h1Result = S_OK
+                                     == DwmSetWindowAttribute( unityWindowHandle,
+                                                               MissingValues::CUSTOM_DWMWINDOWATTRIBUTE::DWMA_USE_IMMERSIVE_DARKMODE_BEFORE20H1,
+                                                               &useDarkMode,
+                                                               sizeof( useDarkMode ) );
+  bool borderColorResult
+      = S_OK == DwmSetWindowAttribute( unityWindowHandle, MissingValues::CUSTOM_DWMWINDOWATTRIBUTE::DWMWA_BORDER_COLOR, &themeColor, sizeof( themeColor ) );
   bool captionColorResult
-      = S_OK == DwmSetWindowAttribute( unityWindowHandle, CUSTOM_DWMWINDOWATTRIBUTE::DWMWA_CAPTION_COLOR, &themeColor, sizeof( themeColor ) );
+      = S_OK == DwmSetWindowAttribute( unityWindowHandle, MissingValues::CUSTOM_DWMWINDOWATTRIBUTE::DWMWA_CAPTION_COLOR, &themeColor, sizeof( themeColor ) );
   printInFile( "DwmSetWindowAttribute returned %d %d %d %d", immersiveDarkModeResult, immersiveDarkMode20h1Result, borderColorResult, captionColorResult );
   bool windowThemeResult = S_OK == SetWindowTheme( unityWindowHandle, L"Explorer", NULL );
   printInFile( "windowThemeResult returned %d", windowThemeResult );
