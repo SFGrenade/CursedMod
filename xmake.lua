@@ -7,10 +7,11 @@ add_rules( "mode.debug", "mode.release", "mode.releasedbg", "mode.minsizerel" )
 set_languages( "c++20" )
 
 if is_plat( "windows" ) then
+    add_cxflags( "/permissive-" )
     add_cxflags( "/Zc:__cplusplus" )
     add_cxflags( "/Zc:preprocessor" )
 
-    add_cxflags( "/permissive-" )
+    add_defines("_CRT_SECURE_NO_WARNINGS")
 else
 end
 
@@ -42,7 +43,7 @@ target( "CursedModNative" )
     elseif is_plat( "macosx" ) then
         --add_packages( "lodepng" )
     elseif is_plat( "windows" ) then
-        add_links("Kernel32", "UxTheme", "Dwmapi", "User32", "Shell32", "ucrt", "vcruntime")
+        add_syslinks( "User32", "Dwmapi", "UxTheme", "Shell32", "Kernel32" )
     else
     end
 

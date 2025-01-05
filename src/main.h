@@ -7,10 +7,10 @@ void _SignalCallback( const int sigNum );
 int _RegisterSignalCallbacks();
 
 #if defined( CM_Windows )
+#include <Windows.h>
 #include <dwmapi.h>
-#include <windows.h>
 extern HWND unityWindowHandle;
-extern NOTIFYICONDATA notifyData;
+extern NOTIFYICONDATAA notifyData;
 #elif defined( CM_MacOS )
 #include <unistd.h>
 #elif defined( CM_Linux )
@@ -21,11 +21,13 @@ extern GNotification *notification;
 extern GIcon *icon;
 #endif
 
-extern "C" EXPORT bool Init();
-extern "C" EXPORT bool Deinit();
-extern "C" EXPORT bool SetWindowDarkMode( const bool darkMode );
-extern "C" EXPORT bool SendShellNotification( char const *title, char const *message );
-extern "C" EXPORT bool RemoveShellNotification();
-extern "C" EXPORT bool DoFunStuff();
+extern "C" {
+EXPORT bool Init();
+EXPORT bool Deinit();
+EXPORT bool SetWindowDarkMode( const bool darkMode );
+EXPORT bool SendShellNotification( char const *title, char const *message );
+EXPORT bool RemoveShellNotification();
+EXPORT bool DoFunStuff();
+}
 
 #endif  // CURSEDMODNATIVE_MAIN_H_

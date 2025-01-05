@@ -37,8 +37,8 @@ void printInFile( char const *format, Args... args ) {
 #include <Windows.h>
 
 extern "C" {
-EXPORT BOOL WINAPI DllMain( HINSTANCE const dllModHandle, DWORD const callReason, LPVOID const reserved );
-EXPORT BOOL __stdcall _DllMainCRTStartup( HINSTANCE const dllModHandle, DWORD const callReason, LPVOID const reserved );
+BOOL WINAPI DllMain( HINSTANCE const dllModHandle, DWORD const callReason, LPVOID const reserved );
+// BOOL WINAPI _DllMainCRTStartup( HINSTANCE const dllModHandle, DWORD const callReason, LPVOID const reserved );
 }
 #endif
 

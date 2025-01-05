@@ -25,20 +25,19 @@ EXIT /B %ERRORLEVEL%
 :main
 
 RMDIR /S /Q "%ORIGINAL_DIR%\%logFolder%"
-RMDIR /S /Q "%ORIGINAL_DIR%\out"
+RMDIR /S /Q "%ORIGINAL_DIR%\_dest"
+RMDIR /S /Q "%ORIGINAL_DIR%\.xmake"
+RMDIR /S /Q "%ORIGINAL_DIR%\build"
 
 MKDIR "%ORIGINAL_DIR%\%logFolder%"
-MKDIR "%ORIGINAL_DIR%\out"
 
 CALL :doCommand "00_made_build_logs" "echo we did it" && cd>NUL || Goto :END
 
-cd "%ORIGINAL_DIR%\out"
+CALL :doCommand "01_config" "xmake config -vD --arch=x64 --mode=releasedbg --kind=shared --runtimes=MD --yes --policies=package.precompiled:n" && cd>NUL || Goto :END
 
-CALL :doCommand "01_build_for_linux" "%zigBin% c++ -o libCursedModNative.so -target x86_64-linux -fno-debug-macro -g0 -fno-standalone-debug -dynamic -shared -pthread -I D:/linux-libraries/usr/include/libmount -I D:/linux-libraries/usr/include/blkid -I D:/linux-libraries/usr/include/glib-2.0 -I D:/linux-libraries/usr/lib/x86_64-linux-gnu/glib-2.0/include -L D:/linux-libraries/bin -l gio-2.0 -l gobject-2.0 -l glib-2.0 -std=c++20 -stdlib=libc++ -Wall -Wextra -Xlinker -s -Xlinker -S ..\src\common.cpp ..\src\main.cpp ..\src\lin\main.cpp" && cd>NUL || Goto :END
+CALL :doCommand "02_build" "xmake build -vD -a" && cd>NUL || Goto :END
 
-CALL :doCommand "01_build_for_mac_os" "%zigBin% c++ -o libCursedModNative.dylib -target x86_64-macos -fno-debug-macro -g0 -fno-standalone-debug -dynamic -shared -std=c++20 -stdlib=libc++ -Wall -Wextra -Xlinker -s -Xlinker -S ..\src\common.cpp ..\src\main.cpp ..\src\mac\main.cpp" && cd>NUL || Goto :END
-
-CALL :doCommand "01_build_for_windows" "%zigBin% c++ -o CursedModNative.dll -target x86_64-windows -fno-debug-macro -g0 -fno-standalone-debug -dynamic -shared -l UxTheme -l Dwmapi -l User32 -std=c++20 -stdlib=libc++ -Wall -Wextra -Xlinker -s -Xlinker -S ..\src\common.cpp ..\src\main.cpp ..\src\win\main.cpp" && cd>NUL || Goto :END
+CALL :doCommand "03_install" "xmake install -vDo _dest/ --group=LIBS" && cd>NUL || Goto :END
 
 ECHO success
 

@@ -7,7 +7,7 @@ GApplication* application = nullptr;
 GNotification* notification = nullptr;
 GIcon* icon = nullptr;
 
-extern bool Init() {
+bool Init() {
   openFile( true );
   printInFile( "Initializing library..." );
 
@@ -27,7 +27,7 @@ extern bool Init() {
   return true;
 }
 
-extern bool Deinit() {
+bool Deinit() {
   printInFile( "Deinitializing library..." );
 
   if( icon )
@@ -42,7 +42,7 @@ extern bool Deinit() {
   return true;
 }
 
-extern bool SetWindowDarkMode( const bool darkMode ) {
+bool SetWindowDarkMode( const bool darkMode ) {
   printInFile( "SetWindowDarkMode(darkMode: %d) - Linux", darkMode );
 
   printInFile( "SetWindowDarkMode is unsupported on Linux" );
@@ -50,7 +50,7 @@ extern bool SetWindowDarkMode( const bool darkMode ) {
   return false;
 }
 
-extern bool SendShellNotification( char const* title, char const* message ) {
+bool SendShellNotification( char const* title, char const* message ) {
   printInFile( "SendShellNotification(title: '%s', message: '%s') - Linux", title, message );
 
   if( notification )
@@ -63,7 +63,7 @@ extern bool SendShellNotification( char const* title, char const* message ) {
   return true;
 }
 
-extern bool RemoveShellNotification() {
+bool RemoveShellNotification() {
   printInFile( "RemoveShellNotification - Linux" );
 
   g_application_withdraw_notification( application, "message" );
@@ -71,7 +71,7 @@ extern bool RemoveShellNotification() {
   return true;
 }
 
-extern bool DoFunStuff() {
+bool DoFunStuff() {
   printInFile( "DoFunStuff - Linux" );
 
   bool ret = true;

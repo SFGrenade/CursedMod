@@ -39,7 +39,7 @@ extern BOOL WINAPI DllMain( HINSTANCE const, DWORD const callReason, LPVOID cons
   }
   return TRUE;
 }
-extern BOOL __stdcall _DllMainCRTStartup( HINSTANCE const dllModHandle, DWORD const callReason, LPVOID const reserved ) {
-  return DllMain( dllModHandle, callReason, reserved );
-}
+// extern BOOL WINAPI _DllMainCRTStartup( HINSTANCE const dllModHandle, DWORD const callReason, LPVOID const reserved ) {
+//   return DllMain( dllModHandle, callReason, reserved );
+// }
 #endif

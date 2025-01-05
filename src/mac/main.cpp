@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern bool Init() {
+bool Init() {
   openFile( true );
   printInFile( "Initializing library..." );
 
@@ -16,7 +16,7 @@ extern bool Init() {
   return true;
 }
 
-extern bool Deinit() {
+bool Deinit() {
   printInFile( "Deinitializing library..." );
 
   closeFile();
@@ -24,7 +24,7 @@ extern bool Deinit() {
   return true;
 }
 
-extern bool SetWindowDarkMode( const bool darkMode ) {
+bool SetWindowDarkMode( const bool darkMode ) {
   printInFile( "SetWindowDarkMode(darkMode: %d) - MacOS", darkMode );
 
   printInFile( "SetWindowDarkMode is unsupported on MacOS" );
@@ -32,7 +32,7 @@ extern bool SetWindowDarkMode( const bool darkMode ) {
   return false;
 }
 
-extern bool SendShellNotification( char const* title, char const* message ) {
+bool SendShellNotification( char const* title, char const* message ) {
   printInFile( "SendShellNotification(title: '%s', message: '%s') - MacOS", title, message );
 
   printInFile( "SendShellNotification is unsupported on MacOS" );
@@ -40,7 +40,7 @@ extern bool SendShellNotification( char const* title, char const* message ) {
   return false;
 }
 
-extern bool RemoveShellNotification() {
+bool RemoveShellNotification() {
   printInFile( "RemoveShellNotification - MacOS" );
 
   printInFile( "RemoveShellNotification is unsupported on MacOS" );
@@ -48,7 +48,7 @@ extern bool RemoveShellNotification() {
   return false;
 }
 
-extern bool DoFunStuff() {
+bool DoFunStuff() {
   printInFile( "DoFunStuff - MacOS" );
 
   printInFile( "DoFunStuff is unsupported on MacOS" );

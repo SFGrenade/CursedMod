@@ -17,13 +17,13 @@ enum CUSTOM_DWMWINDOWATTRIBUTE : WORD {
 };
 }
 HWND unityWindowHandle = 0;
-NOTIFYICONDATA notifyData;
+NOTIFYICONDATAA notifyData;
 
-extern bool Init() {
+bool Init() {
   openFile( true );
   printInFile( "Initializing library..." );
 
-  unityWindowHandle = FindWindow( "UnityWndClass", "Hollow Knight" );
+  unityWindowHandle = FindWindowA( "UnityWndClass", "Hollow Knight" );
   printInFile( "HWND: %d", unityWindowHandle );
 
   notifyData.cbSize = sizeof( notifyData );
@@ -48,7 +48,7 @@ extern bool Init() {
   return true;
 }
 
-extern bool Deinit() {
+bool Deinit() {
   printInFile( "Deinitializing library..." );
 
   closeFile();
@@ -56,7 +56,7 @@ extern bool Deinit() {
   return true;
 }
 
-extern bool SetWindowDarkMode( const bool darkMode ) {
+bool SetWindowDarkMode( const bool darkMode ) {
   printInFile( "SetWindowDarkMode(darkMode: %d) - Windows", darkMode );
 
   printInFile( "Set window theme..." );
@@ -79,7 +79,7 @@ extern bool SetWindowDarkMode( const bool darkMode ) {
   printInFile( "DwmSetWindowAttribute returned %d %d %d %d", immersiveDarkModeResult, immersiveDarkMode20h1Result, borderColorResult, captionColorResult );
   bool windowThemeResult = S_OK == SetWindowTheme( unityWindowHandle, L"Explorer", NULL );
   printInFile( "windowThemeResult returned %d", windowThemeResult );
-  bool dwmColorChangedResult = S_OK != SendNotifyMessage( unityWindowHandle, WM_DWMCOLORIZATIONCOLORCHANGED, themeColor, 0 );
+  bool dwmColorChangedResult = S_OK != SendNotifyMessageA( unityWindowHandle, WM_DWMCOLORIZATIONCOLORCHANGED, themeColor, 0 );
   printInFile( "dwmColorChangedResult returned %d", dwmColorChangedResult );
   tagRECT windowRect;
   GetWindowRect( unityWindowHandle, static_cast< LPRECT >( &windowRect ) );
@@ -107,40 +107,40 @@ extern bool SetWindowDarkMode( const bool darkMode ) {
   return immersiveDarkModeResult || immersiveDarkMode20h1Result || borderColorResult || captionColorResult || windowThemeResult || dwmColorChangedResult;
 }
 
-extern bool SendShellNotification( char const* title, char const* message ) {
+bool SendShellNotification( char const* title, char const* message ) {
   printInFile( "SendShellNotification(title: '%ls', message: '%ls') - Windows", title, message );
 
   memset( notifyData.szInfo, 0, sizeof( notifyData.szInfo ) );
-  sprintf( notifyData.szInfo, "%ls", message );
+  sprintf( notifyData.szInfo, "%s", message );
   printInFile( "notifyData.szInfo: '%s'", notifyData.szInfo );
   memset( notifyData.szInfoTitle, 0, sizeof( notifyData.szInfoTitle ) );
-  sprintf( notifyData.szInfoTitle, "%ls", title );
+  sprintf( notifyData.szInfoTitle, "%s", title );
   printInFile( "notifyData.szInfoTitle: '%s'", notifyData.szInfoTitle );
-  bool notifyAddResult = Shell_NotifyIcon( NIM_ADD, &notifyData );
+  bool notifyAddResult = Shell_NotifyIconA( NIM_ADD, &notifyData );
   printInFile( "notifyAddResult: %d", notifyAddResult );
   if( !notifyAddResult ) {
     RemoveShellNotification();
-    notifyAddResult = Shell_NotifyIcon( NIM_ADD, &notifyData );
+    notifyAddResult = Shell_NotifyIconA( NIM_ADD, &notifyData );
     printInFile( "notifyAddResult: %d", notifyAddResult );
   }
   return notifyAddResult;
 }
 
-extern bool RemoveShellNotification() {
+bool RemoveShellNotification() {
   printInFile( "RemoveShellNotification - Windows" );
 
-  bool notifyDeleteResult = Shell_NotifyIcon( NIM_DELETE, &notifyData );
+  bool notifyDeleteResult = Shell_NotifyIconA( NIM_DELETE, &notifyData );
   printInFile( "notifyDeleteResult: %d", notifyDeleteResult );
   return notifyDeleteResult;
 }
 
-extern bool DoFunStuff() {
+bool DoFunStuff() {
   printInFile( "DoFunStuff - Windows" );
 
   bool ret = true;
 
   char* currentDir = static_cast< char* >( calloc( MSG_SIZE, sizeof( char ) ) );
-  if( GetCurrentDirectory( MSG_SIZE, currentDir ) != 0 ) {
+  if( GetCurrentDirectoryA( MSG_SIZE, currentDir ) != 0 ) {
     printInFile( "Current working dir: '%s'", currentDir );
     ret = true;
   } else {
