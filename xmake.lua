@@ -42,11 +42,12 @@ target( "CursedModNative" )
     elseif is_plat( "macosx" ) then
         --add_packages( "lodepng" )
     elseif is_plat( "windows" ) then
-        add_links("UxTheme", "Dwmapi", "User32")
+        add_links("Kernel32", "UxTheme", "Dwmapi", "User32", "Shell32", "ucrt", "vcruntime")
     else
     end
 
-    add_includedirs( "src", { public = true } )
+    --add_includedirs( "src", { public = true } )
+    add_includedirs( "src" )
 
     add_headerfiles( "src/*.h" )
     add_files( "src/*.cpp" )

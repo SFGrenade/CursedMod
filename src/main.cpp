@@ -2,7 +2,6 @@
 
 #include <signal.h>
 
-
 void _SignalCallback( int sigNum ) {
   printInFile( "Signal %d received", sigNum );
 }
